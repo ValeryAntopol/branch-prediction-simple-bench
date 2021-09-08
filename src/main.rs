@@ -15,6 +15,7 @@ const ARRAY_SIZE: i32 = 1_000_000_000;
 const RNG_MIN: i32 = 0;
 const RNG_MAX: i32 = 100;
 const THRESHOLD: i32 = 50;
+const TRIES: i32 = 50;
 
 fn gen_array() -> Vec<i32> {
     let mut rng = rand::thread_rng();
@@ -31,11 +32,19 @@ fn main() {
     use std::time::Instant;
 
     let start = Instant::now();
-    let val_sorted = check_array(&arr_sorted, THRESHOLD);
+
+    let mut val_sorted = 0i64;
+    for _ in 0..TRIES {
+        val_sorted += check_array(&arr_sorted, THRESHOLD) as i64;
+    }
+
     let duration_sorted = start.elapsed();
 
     let start = Instant::now();
-    let val_unsorted = check_array(&arr_unsorted, THRESHOLD);
+    let mut val_unsorted = 0i64;
+    for _ in 0..TRIES {
+        val_unsorted += check_array(&arr_unsorted, THRESHOLD) as i64;
+    }
     let duration_unsorted = start.elapsed();
 
     println!(
